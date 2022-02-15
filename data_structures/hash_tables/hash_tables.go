@@ -1,20 +1,17 @@
-package main
-
-import "fmt"
+package hashtables
 
 type HashTable struct {
 	items map[int]int
 }
 
 /**
-This function creates a simple hash by looping over the key length.
+This function returns a simple hash by looping over the key length.
 We assume this to be O(1)
 */
 func hash(key string) int {
 	hash := 0
-	k := fmt.Sprintf("%s", key)
-	for i := 0; i < len(k); i++ {
-		hash = hash*31 + int(k[i])
+	for i := 0; i < len(key); i++ {
+		hash = hash*31 + int(key[i])
 	}
 
 	return hash
@@ -33,7 +30,7 @@ func (ht *HashTable) Set(key string, value int) {
 }
 
 /**
-This function gets a value for a hash
+This function returns a value for a hash
 O(1)
 */
 func (ht *HashTable) Get(key string) int {
@@ -42,14 +39,19 @@ func (ht *HashTable) Get(key string) int {
 	return currentBucket
 }
 
-func (ht *HashTable) Keys() {
+/**
+This function returns the size of the hashtable
+*/
+func (ht *HashTable) Size() int {
+	size := len(ht.items)
 
+	return size
 }
 
-func main() {
-	hashTable := &HashTable{}
-	hashTable.Set("Grapes", 10000)
-	hashTable.Set("Apples", 800)
-	hashTable.Set("Oranges", 200)
-	hashTable.Get("Grapes")
-}
+// func main() {
+// 	hashTable := &HashTable{}
+// 	hashTable.Set("Grapes", 10000)
+// 	hashTable.Set("Apples", 800)
+// 	hashTable.Set("Oranges", 200)
+// 	hashTable.Get("Grapes")
+// }
