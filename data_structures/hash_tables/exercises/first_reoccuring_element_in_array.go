@@ -15,7 +15,7 @@ It should return 0
 */
 
 /**
-O(n)
+O(n^2)
 */
 func naiveApproach(array []int) (bool, int) {
 	for i := 0; i < len(array); i++ {
