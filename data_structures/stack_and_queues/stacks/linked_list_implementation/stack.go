@@ -27,11 +27,12 @@ func (s *Stack) Push(value int) {
 	if s.length == 0 {
 		s.top = n
 		s.bottom = n.value
+	} else {
+		holdingPointer := s.top
+		s.top = n
+		s.top.next = holdingPointer
 	}
 
-	holdingPointer := s.top
-	s.top = n
-	s.top.next = holdingPointer
 	s.length++
 }
 
