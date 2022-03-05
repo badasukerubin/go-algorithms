@@ -1,4 +1,4 @@
-package main
+package trees
 
 import "fmt"
 
@@ -9,19 +9,19 @@ import "fmt"
 */
 
 type Node struct {
-	value int
-	left  *Node
-	right *Node
+	Value int
+	Left  *Node
+	Right *Node
 }
 
 type Tree struct {
-	root *Node
+	Root *Node
 }
 
 // String prints a visual representation of the tree
 func (t *Tree) String() {
 	fmt.Println("------------------------------------------------")
-	stringify(t.root, 0)
+	stringify(t.Root, 0)
 	fmt.Println("------------------------------------------------")
 }
 
@@ -35,53 +35,53 @@ func stringify(n *Node, level int) {
 		}
 		format += "---[ "
 		level++
-		stringify(n.left, level)
-		fmt.Printf(format+"%d\n", n.value)
-		stringify(n.right, level)
+		stringify(n.Left, level)
+		fmt.Printf(format+"%d\n", n.Value)
+		stringify(n.Right, level)
 	}
 }
 
 func (t *Tree) Insert(value int) {
 	n := &Node{}
-	n.value = value
-	if t.root == nil {
-		t.root = n
+	n.Value = value
+	if t.Root == nil {
+		t.Root = n
 	} else {
-		currentNode := t.root
+		currentNode := t.Root
 		for {
-			if value < currentNode.value {
+			if value < currentNode.Value {
 				// Go left
-				if currentNode.left == nil {
-					currentNode.left = n
+				if currentNode.Left == nil {
+					currentNode.Left = n
 					return
 				}
-				currentNode = currentNode.left
+				currentNode = currentNode.Left
 			} else {
 				// Go right
-				if currentNode.right == nil {
-					currentNode.right = n
+				if currentNode.Right == nil {
+					currentNode.Right = n
 					return
 				}
-				currentNode = currentNode.right
+				currentNode = currentNode.Right
 			}
 		}
 	}
 }
 
 func (t *Tree) Lookup(value int) *Node {
-	if t.root == nil {
+	if t.Root == nil {
 		return nil
 	}
 
-	currentNode := t.root
+	currentNode := t.Root
 	for currentNode != nil {
-		if value < currentNode.value {
+		if value < currentNode.Value {
 			// Check left
-			currentNode = currentNode.left
-		} else if value > currentNode.value {
+			currentNode = currentNode.Left
+		} else if value > currentNode.Value {
 			// Check right
-			currentNode = currentNode.right
-		} else if value == currentNode.value {
+			currentNode = currentNode.Right
+		} else if value == currentNode.Value {
 			return currentNode
 		}
 	}
@@ -90,71 +90,71 @@ func (t *Tree) Lookup(value int) *Node {
 }
 
 func (t *Tree) Remove(value int) *Node {
-	if t.root == nil {
+	if t.Root == nil {
 		return nil
 	}
 
-	currentNode := t.root
+	currentNode := t.Root
 	var parentNode *Node
 	for currentNode != nil {
-		if value < currentNode.value {
+		if value < currentNode.Value {
 			// Check left
 			parentNode = currentNode
-			currentNode = currentNode.left
-		} else if value > currentNode.value {
+			currentNode = currentNode.Left
+		} else if value > currentNode.Value {
 			// Check right
 			parentNode = currentNode
-			currentNode = currentNode.right
-		} else if value == currentNode.value {
-			if currentNode.right == nil {
+			currentNode = currentNode.Right
+		} else if value == currentNode.Value {
+			if currentNode.Right == nil {
 				// 1. No right child
 				if parentNode == nil {
-					t.root = currentNode.left
+					t.Root = currentNode.Left
 				} else {
-					if currentNode.value < parentNode.value {
+					if currentNode.Value < parentNode.Value {
 						// If parent > current value, current left child = child of parent
-						parentNode.left = currentNode.left
-					} else if currentNode.value > parentNode.value {
+						parentNode.Left = currentNode.Left
+					} else if currentNode.Value > parentNode.Value {
 						// If parent < current value, current left child = child of parent
-						parentNode.right = currentNode.left
+						parentNode.Right = currentNode.Left
 					}
 				}
-			} else if currentNode.right.left == nil {
+			} else if currentNode.Right.Left == nil {
 				// 2. Right child with no left child
 				if parentNode == nil {
-					t.root = currentNode.left
+					t.Root = currentNode.Left
 				} else {
-					currentNode.right.left = currentNode.left
-					if currentNode.value < parentNode.value {
+					currentNode.Right.Left = currentNode.Left
+					if currentNode.Value < parentNode.Value {
 						// If parent > current value, current right child = child of parent
-						parentNode.left = currentNode.right
-					} else if currentNode.value > parentNode.value {
+						parentNode.Left = currentNode.Right
+					} else if currentNode.Value > parentNode.Value {
 						// If parent < current value, current right child = child of parent
-						parentNode.right = currentNode.right
+						parentNode.Right = currentNode.Right
 					}
 				}
 			} else {
 				// 3. Right child with a left child
 				// Check the right child's left most child
-				leftMost := currentNode.right.left
-				leftMostParent := currentNode.right
-				for leftMost.left != nil {
+				leftMost := currentNode.Right.Left
+				leftMostParent := currentNode.Right
+				for leftMost.Left != nil {
 					leftMostParent = leftMost
-					leftMost = leftMost.left
+					leftMost = leftMost.Left
 				}
 
 				// Paren't left subtree is now leftmost right subtree
-				leftMostParent.left = leftMost.right
-				leftMost.left = currentNode.left
-				leftMost.right = currentNode.right
+				leftMostParent.Left = leftMost.Right
+				leftMost.Left = currentNode.Left
+				leftMost.Right = currentNode.Right
 
 				if parentNode == nil {
-					t.root = leftMost
+					t.Root = leftMost
 				} else {
-					if currentNode.value < parentNode.value {
-						parentNode.left = leftMost
-					} else if currentNode.value > parentNode.value {
-						parentNode.right = leftMost
+					if currentNode.Value < parentNode.Value {
+						parentNode.Left = leftMost
+					} else if currentNode.Value > parentNode.Value {
+						parentNode.Right = leftMost
 					}
 				}
 			}
