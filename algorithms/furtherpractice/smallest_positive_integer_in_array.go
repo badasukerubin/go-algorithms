@@ -1,6 +1,9 @@
 package furtherpractice
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 // Write a function:
 
@@ -20,5 +23,20 @@ import "fmt"
 // each element of array A is an integer within the range [−1,000,000..1,000,000].
 
 func Solution() {
-	fmt.Print("test")
+	A := []int{1, 3, 6, 4, 1, 2}
+	// Assign the lowest possible (+ve) value to result
+	result := 1
+
+	// Sort A asc
+	sort.Ints(A)
+
+	// Iterate over A
+	for i := 0; i < len(A); i++ {
+		// Check if the consecutive min values = result and increment if true
+		if A[i] == result {
+			result++
+		}
+	}
+
+	fmt.Println(result)
 }
